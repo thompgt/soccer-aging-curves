@@ -59,12 +59,26 @@ dataset version used.
 **Dependencies:** M1.
 **Risks:** metric validity (a weak proxy undermines the paper); position changes
 across seasons; Transfermarkt performance is basic (no xG).
+**Status:** `notebooks/01_exploration.ipynb` (extensive raw-data EDA) is done and
+already answers several M2 inputs — see its §8 summary:
+- Final analysis-ready sample after all filters: **6,480 player-seasons, 2,970
+  unique players** (big-five leagues, 2020-2023, `MIN_MINUTES >= 900`, valid
+  position + age 16-40).
+- Only ~1% of players (505/48,381) have an unmapped `"Missing"` position — safe to drop.
+- **Thin-tail risk confirmed:** goalkeepers are sparse below age ~24; all positions
+  are sparse past age 35 — M4's curve fitting needs to handle this explicitly
+  (wider uncertainty bands / coarser bins at the extremes, not silent extrapolation).
+- No duplicate rows found in `players`, `appearances`, or `(player_id, game_id)` pairs.
 
 ## M3 — Exploratory data analysis ⭐⭐
 **Goal:** understand distributions before modeling.
 - Age histograms, minutes distribution, sample counts per (age, position).
 - Sanity checks (implausible ages, duplicates).
 **Dependencies:** M2. **Artifact:** committed EDA figures + notes.
+**Status:** raw-data EDA done early, ahead of schedule, in `notebooks/01_exploration.ipynb`
+(see M2 status note below) — most of this milestone's checks already ran against the
+raw tables. M3 proper should re-run the same checks against the *processed* M2 table
+to confirm nothing broke in the join/aggregation step.
 **Risks:** thin samples at age extremes → informs filtering + limitations.
 
 ## M4 — Aging-curve modeling ⭐⭐⭐⭐

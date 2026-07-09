@@ -72,5 +72,15 @@ All sources are free. Raw data is git-ignored; `src/data_collection.py` reproduc
 ## Status
 
 ✅ M0 (environment) and M1 (data acquisition) complete — raw tables are staged
-in `data/raw/`. Next up: M2, building the analysis-ready player-season table
-(`notebooks/`). See `PLAN.md` for the full milestone breakdown.
+in `data/raw/`.
+
+✅ Extensive raw-data EDA done in `notebooks/01_exploration.ipynb`: schema/missingness
+per table, position-mapping coverage, the full scoping funnel (leagues → seasons →
+`MIN_MINUTES` → age range), and the age × position sample-size table. Final
+analysis-ready sample: **6,480 player-seasons across 2,970 unique players**. Confirmed
+a real thin-tail risk (goalkeepers under ~24, all positions past ~35) that M4's curve
+fitting will need to account for.
+
+Next up: M2, building the analysis-ready player-season table for real (`notebooks/`).
+See `PLAN.md` for the full milestone breakdown and `protocol.md` for how notebooks are
+verified before each commit.

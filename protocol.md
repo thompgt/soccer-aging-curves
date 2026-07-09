@@ -34,14 +34,24 @@ When a milestone starts or finishes, update its status in `PLAN.md` so the plan
 tracks reality. The README carries the short public status; `PLAN.md` carries the
 detailed one.
 
-## 3. Notebook reproducibility before committing
+## 3. Notebook reproducibility before committing — HARD GATE
 
-Because this is a notebook-driven project, before committing any notebook:
+**No notebook is committed unless it has just been executed top-to-bottom, from a
+clean kernel, with zero errors.** This is not a manual "looks fine" check — it
+must be verified mechanically every time, no exceptions:
 
-- **Restart kernel and Run All** — confirm it runs top-to-bottom with no hidden
-  state and no out-of-order cells.
-- Make sure outputs shown are the ones the fresh run produced.
-- Clear obviously stale/scratch cells.
+```bash
+.venv/Scripts/python.exe -m jupyter nbconvert --to notebook --execute --inplace \
+  notebooks/<name>.ipynb
+```
+
+- This clears all prior state and re-runs every cell in order, so there is no
+  hidden state, no out-of-order execution, and no stale output.
+- If the command exits non-zero (a cell raised), **the commit does not happen.**
+  Fix the notebook and re-run the command until it succeeds.
+- The committed `.ipynb` outputs are always the outputs of that exact run — never
+  hand-edited or copied from an earlier execution.
+- Applies to every commit that touches a notebook, not just "final" ones.
 
 ## 4. Commit message convention
 
@@ -59,7 +69,7 @@ code + the recorded Kaggle dataset version, not from committing data.
 ### Quick checklist (copy per commit)
 
 - [ ] Change made
-- [ ] Notebook restarted & run all (if a notebook changed)
+- [ ] If a notebook changed: `jupyter nbconvert --execute --inplace` run, **exit code 0**
 - [ ] `README.md` updated to match
 - [ ] `PLAN.md` status updated (if a milestone moved)
 - [ ] Staged, committed, pushed
