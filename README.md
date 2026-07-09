@@ -61,10 +61,16 @@ FBref / Understat via [`soccerdata`](https://soccerdata.readthedocs.io).
 
 All sources are free. Raw data is git-ignored; `src/data_collection.py` reproduces it.
 
+**Dataset version used:** Kaggle `davidcariboo/player-scores`, version 671
+(fetched 2026-07-08) — 48,381 players, 1,889,407 appearances, 656,302 valuations,
+88,944 games, 66 competitions.
+
 > **Kaggle auth:** you need a free Kaggle API token. Create one at
 > <https://www.kaggle.com/settings> → *Create New Token*, then save `kaggle.json`
 > to `%USERPROFILE%\.kaggle\kaggle.json` (or set `KAGGLE_USERNAME` / `KAGGLE_KEY`).
 
 ## Status
 
-🚧 Early scaffolding. See `paper/outline.md` for the planned write-up.
+✅ M0 (environment) and M1 (data acquisition) complete — raw tables are staged
+in `data/raw/`. Next up: M2, building the analysis-ready player-season table
+(`notebooks/`). See `PLAN.md` for the full milestone breakdown.
