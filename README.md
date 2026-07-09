@@ -74,13 +74,28 @@ All sources are free. Raw data is git-ignored; `src/data_collection.py` reproduc
 ✅ M0 (environment) and M1 (data acquisition) complete — raw tables are staged
 in `data/raw/`.
 
-✅ Extensive raw-data EDA done in `notebooks/01_exploration.ipynb`: schema/missingness
+✅ Extensive raw-data EDA in `notebooks/01_exploration.ipynb` (75 cells): schema/missingness
 per table, position-mapping coverage, the full scoping funnel (leagues → seasons →
-`MIN_MINUTES` → age range), and the age × position sample-size table. Final
+`MIN_MINUTES` → age range), and the age × position sample-size table, plus deep dives
+on market value by age for each position, by league, and by nationality. Final
 analysis-ready sample: **6,480 player-seasons across 2,970 unique players**. Confirmed
-a real thin-tail risk (goalkeepers under ~24, all positions past ~35) that M4's curve
-fitting will need to account for.
+a real thin-tail risk (goalkeepers under ~24, all positions past ~35, and even more
+pronounced once sliced by league/nationality) that curve fitting must account for.
 
-Next up: M2, building the analysis-ready player-season table for real (`notebooks/`).
-See `PLAN.md` for the full milestone breakdown and `protocol.md` for how notebooks are
-verified before each commit.
+✅ M2 (cleaning & feature engineering) implemented in `src/analysis.py`
+(`build_player_seasons`, `attach_market_value`): reproduces the same 6,480
+player-season / 2,970 player sample as the EDA scoping funnel, computes per-90
+metrics, and attaches each season's nearest market valuation. Output is saved to
+`data/processed/player_seasons.csv`.
+
+✅ `notebooks/02_features_and_clustering.ipynb` (new): runs the M2 pipeline,
+analyzes which age shows the largest drop in market value (peak ≈ age 21, largest
+post-peak drop ≈ age 31, both overall and per position), and clusters player-seasons
+into 4 interpretable profiles (e.g. young developing players, prime attackers, prime
+defensive/GK regulars, aging declining-value veterans) — exploratory work ahead of
+the formal M4/M5 milestones.
+
+Next up: M3 (re-run EDA sanity checks against the processed table) and M4
+(aging-curve modeling — quadratic + LOESS peak detection). See `PLAN.md` for the
+full milestone breakdown and `protocol.md` for how notebooks are verified before
+each commit.

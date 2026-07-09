@@ -59,8 +59,8 @@ dataset version used.
 **Dependencies:** M1.
 **Risks:** metric validity (a weak proxy undermines the paper); position changes
 across seasons; Transfermarkt performance is basic (no xG).
-**Status:** `notebooks/01_exploration.ipynb` (extensive raw-data EDA) is done and
-already answers several M2 inputs — see its §8 summary:
+**Status:** DONE. `notebooks/01_exploration.ipynb` (extensive raw-data EDA) already
+answered several M2 inputs — see its §8 summary:
 - Final analysis-ready sample after all filters: **6,480 player-seasons, 2,970
   unique players** (big-five leagues, 2020-2023, `MIN_MINUTES >= 900`, valid
   position + age 16-40).
@@ -68,7 +68,26 @@ already answers several M2 inputs — see its §8 summary:
 - **Thin-tail risk confirmed:** goalkeepers are sparse below age ~24; all positions
   are sparse past age 35 — M4's curve fitting needs to handle this explicitly
   (wider uncertainty bands / coarser bins at the extremes, not silent extrapolation).
+  Sections 9-11 (market value by age × position/league/nationality) confirmed this
+  bites even harder on finer slices — e.g. a single-observation thin-tail artifact
+  briefly made a naive calc claim La Liga peaks at age 16; an n≥20 reliability
+  filter is now applied wherever cells are sliced this finely.
 - No duplicate rows found in `players`, `appearances`, or `(player_id, game_id)` pairs.
+
+`src/analysis.py`'s `build_player_seasons`/`attach_market_value` are now implemented
+for real (no longer stubs) and reproduce the exact same 6,480/2,970 sample, confirming
+the notebook EDA and the production join logic agree. Output saved to
+`data/processed/player_seasons.csv` via `notebooks/02_features_and_clustering.ipynb`.
+
+**Exploratory extras (outside the formal M2-M7 plan), also in `02_features_and_clustering.ipynb`:**
+- Age-drop-in-value analysis: robust peak market value age is **21**; the largest
+  post-peak drop is at age **31** overall (≈ -€2.84M), consistent (age 31-32) across
+  Goalkeeper/Defender/Forward; Midfielder's raw largest drop at age 20 was flagged
+  and excluded as early-career noise rather than a real decline.
+- KMeans player-profile clustering (k=4, chosen via elbow + silhouette): young
+  developing players, prime attackers, prime defensive/GK regulars, and aging
+  declining-value veterans. Clusters correlate with but don't simply reproduce
+  position group — worth revisiting once M4's aging curves exist.
 
 ## M3 — Exploratory data analysis ⭐⭐
 **Goal:** understand distributions before modeling.
@@ -77,8 +96,12 @@ already answers several M2 inputs — see its §8 summary:
 **Dependencies:** M2. **Artifact:** committed EDA figures + notes.
 **Status:** raw-data EDA done early, ahead of schedule, in `notebooks/01_exploration.ipynb`
 (see M2 status note below) — most of this milestone's checks already ran against the
-raw tables. M3 proper should re-run the same checks against the *processed* M2 table
-to confirm nothing broke in the join/aggregation step.
+raw tables, and sections 9-11 extended this with market-value-by-age deep dives across
+position, league, and nationality. `02_features_and_clustering.ipynb` re-derives the
+same sample size against the *processed* M2 table (6,480/2,970 match), which covers
+part of the "re-run against processed table" check M3 calls for; a dedicated pass
+re-running the raw-table sanity checks (implausible ages, duplicates) against
+`data/processed/player_seasons.csv` specifically is still open.
 **Risks:** thin samples at age extremes → informs filtering + limitations.
 
 ## M4 — Aging-curve modeling ⭐⭐⭐⭐

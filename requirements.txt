@@ -9,6 +9,10 @@ matplotlib
 # Statistics / curve fitting
 statsmodels
 
+# Clustering (M2 player-profile clustering) -- used only where a specific
+# step needs it, per CLAUDE.md.
+scikit-learn
+
 # Primary data source: David Cariboo "Player Scores" dataset (Transfermarkt) on Kaggle.
 # kagglehub downloads the CSVs programmatically (needs a free Kaggle API token).
 kagglehub
