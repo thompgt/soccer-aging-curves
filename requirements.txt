@@ -10,8 +10,12 @@ seaborn
 # Statistics / curve fitting
 statsmodels
 
-# Soccer data (FBref, Transfermarkt, Understat, ...)
-soccerdata
+# Primary data source: David Cariboo "Player Scores" dataset (Transfermarkt) on Kaggle.
+# kagglehub downloads the CSVs programmatically (needs a free Kaggle API token).
+kagglehub
+
+# Optional enrichment (advanced FBref/Understat metrics). Not required for v1.
+# soccerdata
 
 # Notebooks
 jupyter

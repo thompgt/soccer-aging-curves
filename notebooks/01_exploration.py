@@ -18,20 +18,21 @@ pd.set_option("display.max_columns", 50)
 
 # %% [markdown]
 # ## Step 1 — collect data
-# Run this once (it hits the network). Uncomment when ready:
+# Run this once (downloads from Kaggle; needs a Kaggle token). Uncomment when ready:
 
 # %%
-# from src.data_collection import collect_fbref_player_stats
-# stats = collect_fbref_player_stats()
+# from src.data_collection import main as collect
+# collect()
 
 # %% [markdown]
-# ## Step 2 — load what we saved and look around
+# ## Step 2 — load the staged tables and look around
 
 # %%
 # from src.analysis import load_raw
-# df = load_raw()
-# df.head()
+# tables = load_raw()
+# tables["players"].head()
 
 # %% [markdown]
-# From here we'll clean the data, compute per-90 metrics, and start plotting
-# performance against age. We'll build `src/analysis.py:clean` together.
+# From here we'll aggregate appearances into player-seasons, compute age and
+# per-90 metrics, attach market value, and start plotting performance vs. age.
+# We'll build `src/analysis.py:build_player_seasons` together.

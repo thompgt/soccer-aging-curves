@@ -44,10 +44,19 @@ pip install -r requirements.txt
 
 ## Data sources
 
-- **FBref** (performance + age), accessed via the [`soccerdata`](https://soccerdata.readthedocs.io) package.
-- **Transfermarkt** (market values), also via `soccerdata`.
+**Primary:** David Cariboo's [*Player Scores* dataset](https://www.kaggle.com/datasets/davidcariboo/player-scores)
+(Transfermarkt) on Kaggle. Age, market value, and basic performance are already
+joined by `player_id`, which removes the live-scraping and name-matching risks
+of a from-scratch FBref pipeline. Downloaded via [`kagglehub`](https://pypi.org/project/kagglehub/).
 
-Both are free. Raw data is git-ignored; the collection scripts reproduce it.
+**Optional enrichment (later):** advanced metrics (xG, progressive actions) from
+FBref / Understat via [`soccerdata`](https://soccerdata.readthedocs.io).
+
+All sources are free. Raw data is git-ignored; `src/data_collection.py` reproduces it.
+
+> **Kaggle auth:** you need a free Kaggle API token. Create one at
+> <https://www.kaggle.com/settings> → *Create New Token*, then save `kaggle.json`
+> to `%USERPROFILE%\.kaggle\kaggle.json` (or set `KAGGLE_USERNAME` / `KAGGLE_KEY`).
 
 ## Status
 
