@@ -1,0 +1,17 @@
+# Core data science
+pandas
+numpy
+scipy
+
+# Plotting
+matplotlib
+seaborn
+
+# Statistics / curve fitting
+statsmodels
+
+# Soccer data (FBref, Transfermarkt, Understat, ...)
+soccerdata
+
+# Notebooks
+jupyter
