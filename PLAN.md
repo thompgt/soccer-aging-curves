@@ -8,6 +8,11 @@ project charter in `CLAUDE.md`. Calibrated to a beginner→intermediate develope
 chosen because age + market value + basic performance are pre-joined by
 `player_id`, eliminating live-scraping and name-matching risk.
 
+**Tech stack:** intentionally minimal — **pandas + Jupyter Notebook + Matplotlib**
+(plus numpy/scipy/statsmodels for curve fitting). All work happens in numbered
+notebooks run top-to-bottom; no separate production pipeline, dashboard, or
+heavyweight tooling. This keeps effort on the research, not the toolchain.
+
 Complexity: ⭐ (easy) → ⭐⭐⭐⭐ (hardest for current skill level).
 
 ---
@@ -64,13 +69,14 @@ across seasons; Transfermarkt performance is basic (no xG).
 
 ## M4 — Aging-curve modeling ⭐⭐⭐⭐
 **Goal:** the scientific core — fit curves and locate peaks.
-- Quadratic fit (interpretable peak = -b/2a), then LOESS / spline / GAM.
+- Quadratic fit (interpretable peak = -b/2a), then LOESS smoothing
+  (`statsmodels` lowess) as a non-parametric check.
 - Peak age + uncertainty per position; decline slope.
 - **Survivorship bias:** add a delta-method robustness check (year-over-year
   change for players present in consecutive seasons).
 **Dependencies:** M2 (M3 recommended).
 **Risks:** survivorship bias (the #1 methodological critique); overfitting →
-prefer quadratic/LOESS/GAM over high-degree polynomials.
+prefer quadratic/LOESS over high-degree polynomials.
 
 ## M5 — Market-value efficiency ⭐⭐ (was ⭐⭐⭐; risk reduced by data choice)
 **Goal:** the novel insight — does the market price aging correctly?
@@ -82,8 +88,9 @@ prefer quadratic/LOESS/GAM over high-degree polynomials.
 **Risks:** market value is partly reputation/potential, not pure output — discuss.
 
 ## M6 — Figures & results ⭐⭐
-**Goal:** publication-quality visuals (Plotly primary per `CLAUDE.md`).
+**Goal:** publication-quality visuals (Matplotlib).
 - F1 per-position curves; F2 peak-age comparison; F3 value overlay.
+- Export from notebooks to `figures/`.
 **Dependencies:** M4 (M5 for F3). **Risks:** low; timebox aesthetics.
 
 ## M7 — Paper write-up ⭐⭐⭐
@@ -95,16 +102,15 @@ prefer quadratic/LOESS/GAM over high-degree polynomials.
 ---
 
 ## Cross-cutting concerns (from `CLAUDE.md`)
-- **Testing (pytest):** every transformation in M2/M4/M5 gets a unit test on a
-  tiny fixture. Untested transforms are a stated anti-goal.
-- **Reproducibility:** record the Kaggle dataset version; deterministic pipeline
-  from raw → processed (Parquet) → figures.
-- **Code quality:** ruff + black + mypy in CI before the project grows.
+- **Reproducibility:** record the Kaggle dataset version; each notebook must
+  re-run top-to-bottom from a clean kernel and reproduce its outputs.
+- **Narrative:** every notebook explains its steps in markdown cells — the
+  notebooks double as the lab record for the paper.
+- **README upkeep:** update `README.md` after every commit (see `protocol.md`).
 
 ## Top risks to watch
 1. **Metric validity (M2)** — the performance proxy is the foundation.
 2. **Survivorship bias (M4)** — the intellectual crux and novel contribution.
-3. **Stack vs. skill (cross-cutting)** — the `CLAUDE.md` stack (Polars, DuckDB,
-   Streamlit, GAM/Bayesian) is powerful but adds learning overhead for a 1–3
-   month beginner→intermediate timeline. Introduce advanced tools *incrementally*
-   so tooling never blocks research progress. **Open decision — see below.**
+3. **Notebook reproducibility (cross-cutting)** — notebook-only work makes it easy
+   to leave hidden state or out-of-order cells. Mitigate by always doing a
+   "Restart & Run All" before committing, so results are deterministic.

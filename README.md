@@ -15,20 +15,27 @@ across positions, and whether the transfer market prices that aging correctly.
 
 ## Method (high level)
 
-1. Collect player-season performance data + ages (FBref) and market values (Transfermarkt).
+1. Collect player-season performance, ages, and market values from the Transfermarkt
+   *Player Scores* dataset (all joined by `player_id`).
 2. Build per-90 performance metrics, grouped by position and age.
-3. Fit aging curves (polynomial / LOESS smoothing) to performance vs. age.
+3. Fit aging curves (quadratic + LOESS smoothing) to performance vs. age.
 4. Overlay market value on the performance curve to find over/under-valued age bands.
+
+All analysis is done in **Jupyter notebooks** (pandas + Matplotlib), run
+top-to-bottom. See `protocol.md` for how we work and `PLAN.md` for the milestones.
 
 ## Project structure
 
 ```
 soccer-aging-curves/
+├── CLAUDE.md         # project charter (role, mission, stack, conventions)
+├── PLAN.md           # milestones, dependencies, complexity, risks
+├── protocol.md       # working protocol (update README after each commit, etc.)
 ├── data/
 │   ├── raw/          # untouched downloaded data (git-ignored)
 │   └── processed/    # cleaned, analysis-ready data (git-ignored)
-├── notebooks/        # exploratory Jupyter notebooks
-├── src/              # reusable Python modules (collection, cleaning, analysis)
+├── notebooks/        # THE workspace — all analysis, modeling, and figures
+├── src/              # small helpers the notebooks import (config, data download)
 ├── figures/          # exported charts for the paper
 └── paper/            # research write-up (outline + drafts)
 ```

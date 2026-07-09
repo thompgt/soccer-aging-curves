@@ -5,7 +5,6 @@ scipy
 
 # Plotting
 matplotlib
-seaborn
 
 # Statistics / curve fitting
 statsmodels
