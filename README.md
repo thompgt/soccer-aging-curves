@@ -12,7 +12,7 @@ across positions, and whether the transfer market prices that aging correctly.
 ![pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![statsmodels](https://img.shields.io/badge/statsmodels-4051B5?style=for-the-badge)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
+![Claude Code](https://img.shields.io/badge/Claude_Code-11557C?style=for-the-badge)
 
 ## Research questions
 
